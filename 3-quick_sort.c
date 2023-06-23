@@ -1,10 +1,16 @@
 #include "sort.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+void swap(int *x, int *y);
+int partitioner(int *array, size_t size, int low, int high);
+void sorter(int *array, size_t size, int low, int high);
+void quick_sort(int *array, size_t size);
 
 /**
  * swap - swaps two integers
  * @x: the first integer
  * @y: the second integer
- *
  */
 void swap(int *x, int *y)
 {
@@ -15,6 +21,7 @@ void swap(int *x, int *y)
 	*y = temp;
 }
 
+
 /**
  * partitioner - this function follows the Lomunto
  *		partition scheme
@@ -24,32 +31,34 @@ void swap(int *x, int *y)
  * @size: size of the array
  *
  * Return: the position of the pivot in the rearranged array
- *
  */
-int partitioner(int *array, int low, int high, size_t size)
+int partitioner(int *array, size_t size, int low, int high)
 {
-	int pivot, i, j;
+	int *pivot, i, j;
 
-	pivot = array[high];
-	i = low - 1;
-
-	for (j = low; j < high; j++)
+	pivot = array + high;
+	for (i = j = low; j < high; j++)
 	{
-		if (array[j] < pivot)
+		if (array[j] < *pivot)
 		{
-			if (i != j)
+			if (i < j)
 			{
-				i++;
-				swap(&array[i], &array[j]);
+				swap(array + j, array + i);
 				print_array(array, size);
 			}
+			i++;
 		}
 	}
 
-	swap(&array[i + 1], &array[high]);
-	print_array(array, size);
-	return (i + 1);
+	if (array[i] > *pivot)
+	{
+		swap(array + i, pivot);
+		print_array(array, size);
+	}
+
+	return (i);
 }
+
 
 /**
  * sorter - partitions the array and sorts the array
@@ -57,18 +66,16 @@ int partitioner(int *array, int low, int high, size_t size)
  * @size: size of trhe array
  * @low: index of the first element
  * @high: index of the first element
- *
  */
-void sorter(int *array, int low, int high, size_t size)
+void sorter(int *array, size_t size, int low, int high)
 {
-	int pivot;
+	int half;
 
-	if (low < high)
+	if (high - low > 0)
 	{
-		pivot = partitioner(array, low, high, size);
-
-		sorter(array, low, pivot - 1, size);
-		sorter(array, pivot + 1, high, size);
+		half = partitioner(array, size, low, high);
+		sorter(array, size, low, half - 1);
+		sorter(array, size, half + 1, high);
 	}
 }
 
@@ -82,5 +89,5 @@ void quick_sort(int *array, size_t size)
 	if (array == NULL || size < 2)
 		return;
 
-	sorter(array, 0, size - 1, size);
+	sorter(array, size, 0, size - 1);
 }
