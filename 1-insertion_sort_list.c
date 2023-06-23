@@ -1,4 +1,5 @@
 #include "sort.h"
+
 /**
  * swap_nodes - swaps two nodes in a listint_t doubly linked list
  * @list : this is a ponter to head of the list
@@ -28,7 +29,7 @@ void swap_nodes(listint_t **list, listint_t *node_1, listint_t *node_2)
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *previuos, *current;
+	listint_t *previous, *current;
 
 	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
@@ -39,9 +40,9 @@ void insertion_sort_list(listint_t **list)
 	{
 		previous = current->prev;
 
-		while (insert != NULL && current->n < insert->n)
+		while (previous != NULL && current->n < previous->n)
 		{
-			swap_nodes(list, insert, current);
+			swap_nodes(list, previous, current);
 			print_list((const listint_t *)*list);
 			previous = current->prev;
 		}
