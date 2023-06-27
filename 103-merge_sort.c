@@ -34,8 +34,6 @@ void merge(int *array, int *left, size_t left_size, int *right,
 
 	printf("[Done]: ");
 	print_array(array, left_size + right_size);
-	printf("\n");
-
 }
 
 /**
@@ -55,9 +53,6 @@ void merge_sort(int *array, size_t size)
 		return;
 
 	if (temp == NULL)
-		return;
-
-	if (size < 2)
 		return;
 
 	merge_sort(array, left_size);
