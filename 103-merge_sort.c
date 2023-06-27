@@ -50,14 +50,23 @@ void merge_sort(int *array, size_t size)
 	int *temp = malloc(size * sizeof(int));
 
 	if (array == NULL || size < 2)
+	{
+		free(temp);
 		return;
+	}
 
 	if (temp == NULL)
+	{
+		free(temp);
 		return;
+	}
 
-	merge_sort(array, left_size);
-	merge_sort(array + mid, right_size);
-	merge(temp, array, left_size, array + mid, right_size);
+	if (size > 1)
+	{
+		merge_sort(array, left_size);
+		merge_sort(array + mid, right_size);
+		merge(temp, array, left_size, array + mid, right_size);
+	}
 
 	for (i = 0; i < size; i++)
 		array[i] = temp[i];
