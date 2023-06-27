@@ -49,29 +49,23 @@ void merge_sort(int *array, size_t size)
 	size_t mid = size / 2;
 	size_t left_size = mid;
 	size_t right_size = size - mid;
-	int *left = malloc(left_size * sizeof(int));
-	int *right = malloc(right_size * sizeof(int));
+	int *temp = malloc(size * sizeof(int));
+
+	if (array == NULL || size < 2)
+		return;
+
+	if (temp == NULL)
+		return;
 
 	if (size < 2)
 		return;
 
-	if (left == NULL || right == NULL)
-	{
-		free(left);
-		free(right);
-		return;
-	}
+	merge_sort(array, left_size);
+	merge_sort(array + mid, right_size);
+	merge(temp, array, left_size, array + mid, right_size);
 
-	for (i = 0; i < left_size; i++)
-		left[i] = array[i];
+	for (i = 0; i < size; i++)
+		array[i] = temp[i];
 
-	for (i = 0; i < right_size; i++)
-		right[i] = array[mid + i];
-
-	merge_sort(left, left_size);
-	merge_sort(right, right_size);
-	merge(array, left, left_size, right, right_size);
-
-	free(left);
-	free(right);
+	free(temp);
 }
